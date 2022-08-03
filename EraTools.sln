@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EraCsvManager", "EraCsvManager\EraCsvManager.csproj", "{7BD83D4D-EC9E-420A-B410-EEEE5B13027F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eraEncoder", "eraEncoder\eraEncoder.csproj", "{8F700144-B476-48AC-87EC-A24003334D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eraRenamer", "eraRenamer\eraRenamer.csproj", "{F54B4236-F3BA-4078-B0FD-4DF98AD43DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EraDataHandler", "EraDataHandler\EraDataHandler.csproj", "{F105590C-D1A7-430B-9ACA-37084F3D5600}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BD83D4D-EC9E-420A-B410-EEEE5B13027F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BD83D4D-EC9E-420A-B410-EEEE5B13027F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BD83D4D-EC9E-420A-B410-EEEE5B13027F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BD83D4D-EC9E-420A-B410-EEEE5B13027F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F700144-B476-48AC-87EC-A24003334D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F700144-B476-48AC-87EC-A24003334D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F700144-B476-48AC-87EC-A24003334D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F700144-B476-48AC-87EC-A24003334D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54B4236-F3BA-4078-B0FD-4DF98AD43DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54B4236-F3BA-4078-B0FD-4DF98AD43DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54B4236-F3BA-4078-B0FD-4DF98AD43DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54B4236-F3BA-4078-B0FD-4DF98AD43DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F105590C-D1A7-430B-9ACA-37084F3D5600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F105590C-D1A7-430B-9ACA-37084F3D5600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F105590C-D1A7-430B-9ACA-37084F3D5600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F105590C-D1A7-430B-9ACA-37084F3D5600}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E5C1487-D452-4FAB-B993-F06F17581EB7}
+	EndGlobalSection
+EndGlobal
