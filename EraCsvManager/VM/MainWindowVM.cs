@@ -27,7 +27,7 @@ namespace EraCsvManager.VM
         public string[] Prefices = new string[] { "ABL", "EXP", "TALENT", "TRAIN", "MARK", "ITEM", "BASE", "EQUIP", "TEQUIP", "FLAG", "TFLAG", "CFLAG", "PALAM", "JUEL", "TCVAR", "TSTR", "CSTR" };
 
 
-        protected string outErbExeDir = @"I:\Temp\era\erAV_ver030_Custom22";
+        protected string outErbExeDir = String.Empty;
         public string OutErbExeDir
         {
             get
@@ -44,7 +44,7 @@ namespace EraCsvManager.VM
             }
         }
 
-        protected string erbExeDir = @"I:\Temp\era\erAV_Ho";
+        protected string erbExeDir = String.Empty;
         public string ErbExeDir
         {
             get
