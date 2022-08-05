@@ -49,14 +49,18 @@
                 />
             <TextBlock
                 DockPanel.Dock="Left"
-                Text="Eraルートフォルダ"
+                Text="Eraルートフォルダ" Width="120"
                 />
             <TextBox
                 x:Name="txtRootDir"
                 VerticalAlignment="Center"
                 TextWrapping="NoWrap"
-                AcceptsReturn="False" Text="{Binding ErbExeDir}"
+                AcceptsReturn="False" Text="{Binding ErbExeDir, UpdateSourceTrigger=PropertyChanged}" Width="500"
                 />
+            <Button
+                HorizontalAlignment="Right"
+                Content="..."
+                Click="SelectErbExeDir"/>
         </DockPanel>
         <DockPanel 
             DockPanel.Dock="Top">
@@ -66,13 +70,19 @@
                 />
             <TextBlock
                 DockPanel.Dock="Left"
-                Text="出力Eraルートフォルダ"
+                Text="出力Eraルートフォルダ" Width="120"
                 />
             <TextBox
+                x:Name="txtOutDir"
                 VerticalAlignment="Center"
                 TextWrapping="NoWrap"
-                AcceptsReturn="False" Text="{Binding OutErbExeDir}"
+                AcceptsReturn="False" Text="{Binding OutErbExeDir, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="500"
                 />
+            <Button
+                HorizontalAlignment="Right"
+                Content="..."
+                Click="SelectOutDir"/>
+
         </DockPanel>
         <WrapPanel
             DockPanel.Dock="Top">
