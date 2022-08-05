@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Windows.Forms;
 
 namespace EraCsvManager.VM
 {
@@ -24,6 +25,7 @@ namespace EraCsvManager.VM
         public bool ReverseWithRename { get; set; }
 
         public string[] Prefices = new string[] { "ABL", "EXP", "TALENT", "TRAIN", "MARK", "ITEM", "BASE", "EQUIP", "TEQUIP", "FLAG", "TFLAG", "CFLAG", "PALAM", "JUEL", "TCVAR", "TSTR", "CSTR" };
+
 
         protected string outErbExeDir = @"I:\Temp\era\erAV_ver030_Custom22";
         public string OutErbExeDir
@@ -851,6 +853,28 @@ namespace EraCsvManager.VM
                     }
                 }
             }
+        }
+        public string SelectExeDir(string type)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            fbd.Description = "フォルダを選択してください";
+            fbd.RootFolder = Environment.SpecialFolder.Desktop;
+            fbd.SelectedPath = ErbExeDir;
+            fbd.ShowNewFolderButton = true;
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                switch (type)
+                {
+                    case "root":
+                        ErbExeDir = fbd.SelectedPath;
+                        return ErbExeDir;
+                    case "out":
+                        OutErbExeDir = fbd.SelectedPath;
+                        return OutErbExeDir;
+                }
+            }
+            return "";
         }
     }
 }
