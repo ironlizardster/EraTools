@@ -44,7 +44,7 @@ namespace EraCsvManager.VM
             }
         }
 
-        protected string erbExeDir = String.Empty;
+        protected string erbExeDir = Application.StartupPath;
         public string ErbExeDir
         {
             get
