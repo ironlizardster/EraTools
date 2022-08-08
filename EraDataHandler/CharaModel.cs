@@ -328,7 +328,9 @@ namespace EraDataHandler
         {
             Int64 index = -1;
             Int32 paramIndex = -1;
-            string[] tokens = line.Split(',');
+            string[] tokens = line.Split(';');
+            var comment = tokens.Length > 1 ? tokens[1] : String.Empty;
+            tokens = tokens[0].Split(',');
             if ((tokens[0].Equals("NO", StringComparison.OrdinalIgnoreCase)) || (tokens[0].Equals("番号", StringComparison.OrdinalIgnoreCase)))
             {
 
@@ -352,10 +354,13 @@ namespace EraDataHandler
             {
                 string varname = tokens[0].ToUpper();
                 var value = tokens.Length > 2 && !tokens[2].StartsWith(";") ? tokens[2] : String.Empty;
-                var comment = tokens.Length > 2 && tokens[2].StartsWith(";")
-                    || tokens.Length > 3 && tokens[3].StartsWith(";")
-                    ? (tokens.Length > 2 && tokens[2].StartsWith(";") ? tokens[2] : tokens[3])
-                    : String.Empty;
+                if (string.IsNullOrWhiteSpace(comment))
+                {
+                    comment = tokens.Length > 2 && tokens[2].StartsWith(";")
+                        || tokens.Length > 3 && tokens[3].StartsWith(";")
+                        ? (tokens.Length > 2 && tokens[2].StartsWith(";") ? tokens[2] : tokens[3])
+                        : String.Empty;
+                }
                 switch (varname)
                 {
                     case "NAME":

@@ -598,7 +598,8 @@ namespace EraCsvManager.VM
                                                 }
                                                 if (!string.IsNullOrWhiteSpace(row["文字列"].ToString()))
                                                 {
-                                                    sw.WriteLine($"{row["ID"]},{row["文字列"]},{row["コメント"]}");
+                                                    var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                                    sw.WriteLine($"{row["ID"]},{row["文字列"]},{commentPart}");
                                                 }
                                             }
                                         }
@@ -616,7 +617,8 @@ namespace EraCsvManager.VM
                             {
                                 foreach (DataRow row in renameDataTable.Rows)
                                 {
-                                    sw.WriteLine($"{row["置き換え値"]},{row["置き換えパターン"]},{row["コメント"]}");
+                                    var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                    sw.WriteLine($"{row["置き換え値"]},{row["置き換えパターン"]},{commentPart}");
                                     if (Prefixes.Contains(row["置き換えパターン"].ToString().Split(':')[0]))
                                     {
                                         var key = $"{row["置き換えパターン"].ToString().Split(':')[0]}:{row["置き換え値"]}";
@@ -654,7 +656,8 @@ namespace EraCsvManager.VM
 
                                     foreach (DataRow row in chara.RelationDataView.ToTable().Rows)
                                     {
-                                        sw.WriteLine($"相性,{row["ID"]},{ row["値"]}");
+                                        var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                        sw.WriteLine($"相性,{row["ID"]},{row["値"]},{commentPart}");
                                     }
 
                                 }
@@ -813,7 +816,8 @@ namespace EraCsvManager.VM
                 if (replacement.Count() > 0)
                     id = replacement.First();
 
-                sw.WriteLine($"{prefix},{id},{row["値"]},{row["コメント"]}");
+                var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                sw.WriteLine($"{prefix},{id},{row["値"]},{commentPart}");
             }
         }
 
@@ -824,6 +828,9 @@ namespace EraCsvManager.VM
 
             var prefix = fileName.Split('.')[0];
             var addToReverseDic = Prefixes.Contains(prefix);
+
+            if (!Directory.Exists(OutErbExeDir))
+                Directory.CreateDirectory(CsvDir.Replace(ErbExeDir, OutErbExeDir));
 
             var csvFileName = Path.Combine(CsvDir, fileName).Replace(ErbExeDir, OutErbExeDir);
             using (var csvFile = File.Open(csvFileName, FileMode.Create))
@@ -836,11 +843,13 @@ namespace EraCsvManager.VM
                     {
                         if (hasPrice)
                         {
-                            sw.WriteLine($"{row["ID"]},{row["名前"]},{row["値段"]},{row["コメント"]}");
+                            var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                            sw.WriteLine($"{row["ID"]},{row["名前"]},{row["値段"]},{commentPart}");
                         }
                         else
                         {
-                            sw.WriteLine($"{row["ID"]},{row["名前"]},{row["コメント"]}");
+                            var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                            sw.WriteLine($"{row["ID"]},{row["名前"]},{commentPart}");
                         }
                         if (addToReverseDic &&
                             !(sWhitespace.IsMatch(row["名前"].ToString()) || sIrregular.IsMatch(row["名前"].ToString())) &&

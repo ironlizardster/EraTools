@@ -80,7 +80,7 @@
                 x:Name="txtOutDir"
                 VerticalAlignment="Center"
                 TextWrapping="NoWrap"
-                AcceptsReturn="False" Text="{Binding OutErbExeDir, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                AcceptsReturn="False" Text="{Binding OutErbExeDir, UpdateSourceTrigger=PropertyChanged}"
                 />
         </DockPanel>
         <WrapPanel
