@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EraCsvManager"
         xmlns:VM="clr-namespace:EraCsvManager.VM" 
+    xmlns:Converter="clr-namespace:EraCsvManager.Converter" 
     x:Class="EraCsvManager.MainWindow"
         mc:Ignorable="d"
         Title="Era CSV Manager" Height="800" Width="1000">
     <Window.Resources>
+        <Converter:FolderPathIsPresentConverter x:Key="FolderPathIsPresentConverter"/>
         <!-- One style for each *type* of control on the window -->
         <Style TargetType="{x:Type Button}">
             <Setter Property="Height" Value="30"/>
@@ -85,9 +87,9 @@
         </DockPanel>
         <WrapPanel
             DockPanel.Dock="Top">
-            <CheckBox Content="バックアップする？" IsChecked="{Binding BackupOutput}" VerticalContentAlignment="Center"/>
-            <CheckBox Content="出力Eraルートフォルダ\ERB\のなかの*.ERBを変換する？" IsChecked="{Binding UpdateErb}" VerticalContentAlignment="Center"/>
-            <CheckBox Content="ERBを可読化のかわりに難読化する？" IsChecked="{Binding ReverseErb}" VerticalContentAlignment="Center"/>
+            <CheckBox Content="バックアップする？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding BackupOutput}" VerticalContentAlignment="Center"/>
+            <CheckBox Content="出力Eraルートフォルダ\ERB\のなかの*.ERBを変換する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding UpdateErb}" VerticalContentAlignment="Center"/>
+            <CheckBox Content="ERBを可読化のかわりに難読化する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding ReverseErb}" VerticalContentAlignment="Center"/>
             <CheckBox Content="_Rename.csvも使って難読化する？" IsEnabled="{Binding ReverseErb}" IsChecked="{Binding ReverseWithRename}" VerticalContentAlignment="Center"/>
         </WrapPanel>
         <DockPanel>
@@ -186,7 +188,7 @@
                 <TabItem Header="CHARA*.CSV">
                     <TabControl ItemsSource="{Binding CharacterList}">
                         <TabControl.Template>
-                            <ControlTemplate TargetType="TabControl">
+                            <ControlTemplate TargetType="{x:Type TabControl}">
                                 <StackPanel>
                                     <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
                                         <TabPanel x:Name="HeaderPanel"

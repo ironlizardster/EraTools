@@ -77,6 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config\Configs.cs" />
+    <Compile Include="Converter\FolderPathIsPresentConverter.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="VM\MainWindowVM.cs" />
     <Page Include="MainWindow.xaml">
