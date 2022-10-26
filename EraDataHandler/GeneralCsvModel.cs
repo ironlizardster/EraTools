@@ -346,6 +346,23 @@ namespace EraDataHandler
                                     continue;
                                 if (line.StartsWith(";"))
                                     continue;
+                                if (line.StartsWith("{"))
+                                {
+                                    line = line.Substring(1);
+                                    var partline = reader.ReadLine();
+                                    partline = partline.Trim();
+                                    while (partline != null)
+                                    {
+                                        line += partline;
+                                        if (partline.EndsWith("}"))
+                                        {
+                                            line = line.Substring(0, line.Length - 1);
+                                            break;
+                                        }
+                                        partline = reader.ReadLine();
+                                        partline = partline.Trim();
+                                    }
+                                }
                                 string[] tokens = line.Split(',');
                                 if (tokens.Length < 2 || tokens[0].Length == 0)
                                 {
