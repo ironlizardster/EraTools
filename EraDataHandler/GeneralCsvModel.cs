@@ -353,14 +353,18 @@ namespace EraDataHandler
                                     partline = partline.Trim();
                                     while (partline != null)
                                     {
-                                        line += partline;
-                                        if (partline.EndsWith("}"))
+                                        if (!partline.EndsWith("}"))
                                         {
+                                            line += partline + Environment.NewLine;
+                                        }
+                                        else
+                                        {
+                                            line += partline;
                                             line = line.Substring(0, line.Length - 1);
                                             break;
                                         }
                                         partline = reader.ReadLine();
-                                        partline = partline.Trim();
+                                        partline = partline?.Trim();
                                     }
                                 }
                                 string[] tokens = line.Split(',');

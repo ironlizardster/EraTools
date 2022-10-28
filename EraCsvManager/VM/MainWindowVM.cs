@@ -599,7 +599,8 @@ namespace EraCsvManager.VM
                                                 if (!string.IsNullOrWhiteSpace(row["文字列"].ToString()))
                                                 {
                                                     var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                                                    sw.WriteLine($"{row["ID"]},{row["文字列"]},{commentPart}");
+                                                    var text = $"{row["ID"]},{row["文字列"]},{commentPart}";
+                                                    WriteToSw(sw, text);
                                                 }
                                             }
                                         }
@@ -637,12 +638,12 @@ namespace EraCsvManager.VM
                             {
                                 using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
                                 {
-                                    sw.WriteLine($"番号,{chara.EditNo}");
-                                    sw.WriteLine($"名前,{chara.EditName}");
+                                    WriteToSw(sw, $"番号,{chara.EditNo}");
+                                    WriteToSw(sw, $"名前,{chara.EditName}");
                                     if (!string.IsNullOrWhiteSpace(chara.EditCallName))
-                                        sw.WriteLine($"呼び名,{chara.EditCallName}");
+                                        WriteToSw(sw, $"呼び名,{chara.EditCallName}");
                                     if (!string.IsNullOrWhiteSpace(chara.EditNickName))
-                                        sw.WriteLine($"あだ名,{chara.EditNickName}");
+                                        WriteToSw(sw, $"あだ名,{chara.EditNickName}");
 
                                     WriteTable(chara.BaseDataView.ToTable(), baseDataTable, "基礎", sw);
                                     WriteTable(chara.AblDataView.ToTable(), ablDataTable, "能力", sw);
@@ -657,7 +658,8 @@ namespace EraCsvManager.VM
                                     foreach (DataRow row in chara.RelationDataView.ToTable().Rows)
                                     {
                                         var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                                        sw.WriteLine($"相性,{row["ID"]},{row["値"]},{commentPart}");
+                                        var text = $"相性,{row["ID"]},{row["値"]},{commentPart}";
+                                        WriteToSw(sw, text);
                                     }
 
                                 }
@@ -817,7 +819,7 @@ namespace EraCsvManager.VM
                     id = replacement.First();
 
                 var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                sw.WriteLine($"{prefix},{id},{row["値"]},{commentPart}");
+                WriteToSw(sw, $"{prefix},{id},{row["値"]},{commentPart}");
             }
         }
 
@@ -832,6 +834,9 @@ namespace EraCsvManager.VM
             if (!Directory.Exists(OutErbExeDir))
                 Directory.CreateDirectory(CsvDir.Replace(ErbExeDir, OutErbExeDir));
 
+            if (!Directory.Exists(CsvDir.Replace(ErbExeDir, OutErbExeDir)))
+                Directory.CreateDirectory(CsvDir.Replace(ErbExeDir, OutErbExeDir));
+
             var csvFileName = Path.Combine(CsvDir, fileName).Replace(ErbExeDir, OutErbExeDir);
             using (var csvFile = File.Open(csvFileName, FileMode.Create))
             {
@@ -841,15 +846,16 @@ namespace EraCsvManager.VM
                     table = table.DefaultView.ToTable();
                     foreach (DataRow row in table.Rows)
                     {
+                        var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
                         if (hasPrice)
                         {
-                            var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                            sw.WriteLine($"{row["ID"]},{row["名前"]},{row["値段"]},{commentPart}");
+                            var text = $"{row["ID"]},{row["名前"]},{row["値段"]},{commentPart}";
+                            WriteToSw(sw, text);
                         }
                         else
                         {
-                            var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                            sw.WriteLine($"{row["ID"]},{row["名前"]},{commentPart}");
+                            var text = $"{row["ID"]},{row["名前"]},{commentPart}";
+                            WriteToSw(sw, text);
                         }
                         if (addToReverseDic &&
                             !(sWhitespace.IsMatch(row["名前"].ToString()) || sIrregular.IsMatch(row["名前"].ToString())) &&
@@ -863,6 +869,7 @@ namespace EraCsvManager.VM
                 }
             }
         }
+
         public string SelectExeDir(string type)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -885,5 +892,14 @@ namespace EraCsvManager.VM
             }
             return "";
         }
+
+        private void WriteToSw(StreamWriter sw, string text)
+        {
+            var needWrap = text.Contains(Environment.NewLine);
+            if (needWrap)
+                text = "{" + Environment.NewLine + text + Environment.NewLine + "}";
+            sw.WriteLine(text);
+        }
+
     }
 }
