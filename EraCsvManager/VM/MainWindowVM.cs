@@ -179,6 +179,8 @@ namespace EraCsvManager.VM
                     {
                         try
                         {
+                            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
                             逆引きキャラID = new Dictionary<string, string>();
 
                             #region Load data
@@ -446,6 +448,10 @@ namespace EraCsvManager.VM
                         catch (Exception ex)
                         {
                         }
+                        finally
+                        {
+                            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                        }
                     });
                 }
                 return loadCsvCommand;
@@ -525,158 +531,183 @@ namespace EraCsvManager.VM
                 {
                     generateOutputCommand = new RelayCommand((obj) => Loaded, (obj) =>
                     {
-                        if (BackupOutput && Directory.Exists(OutErbExeDir))
+                        try
                         {
-                            var dirName = Path.GetFileName(OutErbExeDir);
-                            var backupName = Path.Combine(OutErbExeDir, $"..\\{dirName}_Backup{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}");
-                            foreach (string dirPath in Directory.GetDirectories(OutErbExeDir, "*", SearchOption.AllDirectories))
+                            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+                            if (BackupOutput && Directory.Exists(OutErbExeDir))
                             {
-                                Directory.CreateDirectory(dirPath.Replace(OutErbExeDir, backupName));
-                            }
-
-                            //Copy all the files & Replaces any files with the same name
-                            foreach (string newPath in Directory.GetFiles(OutErbExeDir, "*.*", SearchOption.AllDirectories))
-                            {
-                                File.Copy(newPath, newPath.Replace(OutErbExeDir, backupName), true);
-                            }
-                        }
-
-                        逆引きCSV設定 = new Dictionary<string, string>();
-
-                        WriteCsv(ablDataTable, "ABL.csv");
-                        WriteCsv(expDataTable, "EXP.csv");
-                        WriteCsv(talentDataTable, "TALENT.csv");
-                        WriteCsv(trainDataTable, "TRAIN.csv");
-                        WriteCsv(markDataTable, "MARK.csv");
-                        WriteCsv(itemDataTable, "ITEM.csv", true);
-                        WriteCsv(baseDataTable, "BASE.csv");
-                        WriteCsv(equipDataTable, "EQUIP.csv");
-                        WriteCsv(tequipDataTable, "TEQUIP.csv");
-                        WriteCsv(flagDataTable, "FLAG.csv");
-                        WriteCsv(tflagDataTable, "TFLAG.csv");
-                        WriteCsv(cflagDataTable, "CFLAG.csv");
-                        WriteCsv(tcvarDataTable, "TCVAR.csv");
-                        WriteCsv(cstrDataTable, "CSTR.csv");
-                        WriteCsv(tstrDataTable, "TSTR.csv");
-                        WriteCsv(palamDataTable, "PALAM.csv");
-                        WriteCsv(saveStrDataTable, "SAVESTR.csv");
-                        WriteCsv(cdFlag1DataTable, "CDFLAG1.csv");
-                        WriteCsv(cdFlag2DataTable, "CDFLAG2.csv");
-
-                        string csvFileName;
-
-                        #region STR.csv
-
-                        if (strDataTable.Rows.Count > 0)
-                        {
-
-                            var addToReverseDic = Prefixes.Contains("STR");
-
-                            csvFileName = Path.Combine(CsvDir, "STR.csv").Replace(ErbExeDir, OutErbExeDir);
-                            var csvNameFileName = Path.Combine(CsvDir, "STRNAME.csv").Replace(ErbExeDir, OutErbExeDir);
-                            using (var csvFile = File.Open(csvFileName, FileMode.Create))
-                            {
-                                using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
+                                var dirName = Path.GetFileName(OutErbExeDir);
+                                var backupName = Path.Combine(OutErbExeDir, $"..\\{dirName}_Backup{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}");
+                                foreach (string dirPath in Directory.GetDirectories(OutErbExeDir, "*", SearchOption.AllDirectories))
                                 {
-                                    using (var csvNameFile = File.Open(csvNameFileName, FileMode.Create))
+                                    if (dirPath.ToLower().EndsWith(@"\.git")|| dirPath.ToLower().Contains(@"\.git\")
+                                    || dirPath.ToLower().EndsWith(@"\.vs") || dirPath.ToLower().Contains(@"\.vs\"))
+                                        continue;
+                                    Directory.CreateDirectory(dirPath.Replace(OutErbExeDir, backupName));
+                                }
+
+                                //Copy all the files & Replaces any files with the same name
+                                foreach (string newPath in Directory.GetFiles(OutErbExeDir, "*.*", SearchOption.AllDirectories))
+                                {
+                                    if (newPath.ToLower().EndsWith(@"\.git") || newPath.ToLower().Contains(@"\.git\")
+                                    || newPath.ToLower().EndsWith(@"\.vs") || newPath.ToLower().Contains(@"\.vs\"))
+                                        continue;
+                                    File.Copy(newPath, newPath.Replace(OutErbExeDir, backupName), true);
+                                }
+                            }
+
+                            逆引きCSV設定 = new Dictionary<string, string>();
+
+                            WriteCsv(ablDataTable, "ABL.csv");
+                            WriteCsv(expDataTable, "EXP.csv");
+                            WriteCsv(talentDataTable, "TALENT.csv");
+                            WriteCsv(trainDataTable, "TRAIN.csv");
+                            WriteCsv(markDataTable, "MARK.csv");
+                            WriteCsv(itemDataTable, "ITEM.csv", true);
+                            WriteCsv(baseDataTable, "BASE.csv");
+                            WriteCsv(equipDataTable, "EQUIP.csv");
+                            WriteCsv(tequipDataTable, "TEQUIP.csv");
+                            WriteCsv(flagDataTable, "FLAG.csv");
+                            WriteCsv(tflagDataTable, "TFLAG.csv");
+                            WriteCsv(cflagDataTable, "CFLAG.csv");
+                            WriteCsv(tcvarDataTable, "TCVAR.csv");
+                            WriteCsv(cstrDataTable, "CSTR.csv");
+                            WriteCsv(tstrDataTable, "TSTR.csv");
+                            WriteCsv(palamDataTable, "PALAM.csv");
+                            WriteCsv(saveStrDataTable, "SAVESTR.csv");
+                            WriteCsv(cdFlag1DataTable, "CDFLAG1.csv");
+                            WriteCsv(cdFlag2DataTable, "CDFLAG2.csv");
+
+                            string csvFileName;
+
+                            #region STR.csv
+
+                            if (strDataTable.Rows.Count > 0)
+                            {
+
+                                var addToReverseDic = Prefixes.Contains("STR");
+
+                                csvFileName = Path.Combine(CsvDir, "STR.csv").Replace(ErbExeDir, OutErbExeDir);
+                                var csvNameFileName = Path.Combine(CsvDir, "STRNAME.csv").Replace(ErbExeDir, OutErbExeDir);
+                                using (var csvFile = File.Open(csvFileName, FileMode.Create))
+                                {
+                                    using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
                                     {
-                                        using (var namesw = new StreamWriter(csvNameFile, new UTF8Encoding(true)))
+                                        strDataTable.DefaultView.Sort = "ID ASC";
+                                        strDataTable = strDataTable.DefaultView.ToTable();
+                                        foreach (DataRow row in strDataTable.Rows)
                                         {
-                                            strDataTable.DefaultView.Sort = "ID ASC";
-                                            strDataTable = strDataTable.DefaultView.ToTable();
-                                            foreach (DataRow row in strDataTable.Rows)
+                                            if (!string.IsNullOrWhiteSpace(row["文字列"].ToString()))
                                             {
-                                                var strName = strNameDataTable.AsEnumerable().FirstOrDefault(nameRow => nameRow["ID"] == row["ID"])?["名前"].ToString();
-                                                if (!string.IsNullOrWhiteSpace(strName))
+                                                var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                                var text = $"{row["ID"]},{row["文字列"]},{commentPart}";
+                                                WriteToSw(sw, text);
+                                            }
+                                        }
+                                    }
+                                }
+                                using (var csvNameFile = File.Open(csvNameFileName, FileMode.Create))
+                                {
+                                    using (var namesw = new StreamWriter(csvNameFile, new UTF8Encoding(true)))
+                                    {
+                                        strNameDataTable.DefaultView.Sort = "ID ASC";
+                                        strDataTable = strNameDataTable.DefaultView.ToTable();
+                                        foreach (DataRow row in strNameDataTable.Rows)
+                                        {
+                                            if (!string.IsNullOrWhiteSpace(row["名前"].ToString()))
+                                            {
+                                                var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                                namesw.WriteLine($"{row["ID"]},{row["名前"]},{commentPart}");
+                                                if (addToReverseDic && !逆引きCSV設定.ContainsKey($"STR:{row["ID"]}"))
                                                 {
-                                                    var strComment = strNameDataTable.AsEnumerable().FirstOrDefault(nameRow => nameRow["ID"] == row["ID"])?["コメント"].ToString();
-                                                    namesw.WriteLine($"{row["ID"]},{strName},{strComment}");
-                                                    if (addToReverseDic && !逆引きCSV設定.ContainsKey($"STR:{row["ID"]}"))
-                                                    {
-                                                        逆引きCSV設定[$"STR:{row["ID"]}"] = strName;
-                                                    }
-                                                }
-                                                if (!string.IsNullOrWhiteSpace(row["文字列"].ToString()))
-                                                {
-                                                    var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                                                    var text = $"{row["ID"]},{row["文字列"]},{commentPart}";
-                                                    WriteToSw(sw, text);
+                                                    逆引きCSV設定[$"STR:{row["ID"]}"] = row["名前"].ToString();
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        #endregion STR.csv
+                            #endregion STR.csv
 
-                        csvFileName = Path.Combine(CsvDir, "_Rename.csv").Replace(ErbExeDir, OutErbExeDir);
-                        using (var csvFile = File.Open(csvFileName, FileMode.Create))
-                        {
-                            using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
-                            {
-                                foreach (DataRow row in renameDataTable.Rows)
-                                {
-                                    var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                                    sw.WriteLine($"{row["置き換え値"]},{row["置き換えパターン"]},{commentPart}");
-                                    if (Prefixes.Contains(row["置き換えパターン"].ToString().Split(':')[0]))
-                                    {
-                                        var key = $"{row["置き換えパターン"].ToString().Split(':')[0]}:{row["置き換え値"]}";
-                                        if (!逆引きCSV設定.ContainsKey(key))
-                                            逆引きCSV設定[key] = $"[[{row["置き換えパターン"]}]]";
-                                    }
-                                }
-                            }
-                        }
-
-                        var csvNoDigits = CharacterList.Max(chara => chara.EditNo).ToString().Length;
-                        foreach (var chara in CharacterList)
-                        {
-                            csvFileName = Path.Combine(CsvDir, $"Chara{chara.EditNo.ToString($"D{csvNoDigits}")}_{/*sWhitespace.Replace(*/chara.EditName/*, "")*/}.csv").Replace(ErbExeDir, OutErbExeDir);
+                            csvFileName = Path.Combine(CsvDir, "_Rename.csv").Replace(ErbExeDir, OutErbExeDir);
                             using (var csvFile = File.Open(csvFileName, FileMode.Create))
                             {
                                 using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
                                 {
-                                    WriteToSw(sw, $"番号,{chara.EditNo}");
-                                    WriteToSw(sw, $"名前,{chara.EditName}");
-                                    if (!string.IsNullOrWhiteSpace(chara.EditCallName))
-                                        WriteToSw(sw, $"呼び名,{chara.EditCallName}");
-                                    if (!string.IsNullOrWhiteSpace(chara.EditNickName))
-                                        WriteToSw(sw, $"あだ名,{chara.EditNickName}");
-
-                                    WriteTable(chara.BaseDataView.ToTable(), baseDataTable, "基礎", sw);
-                                    WriteTable(chara.AblDataView.ToTable(), ablDataTable, "能力", sw);
-                                    WriteTable(chara.ExpDataView.ToTable(), expDataTable, "経験", sw);
-                                    WriteTable(chara.TalentDataView.ToTable(), talentDataTable, "素質", sw);
-                                    WriteTable(chara.MarkDataView.ToTable(), markDataTable, "刻印", sw);
-                                    WriteTable(chara.EquipDataView.ToTable(), equipDataTable, "装着物", sw);
-                                    WriteTable(chara.JuelDataView.ToTable(), palamDataTable, "珠", sw);
-                                    WriteTable(chara.CFlagDataView.ToTable(), cflagDataTable, "フラグ", sw);
-                                    WriteTable(chara.CStrDataView.ToTable(), cstrDataTable, "CSTR", sw);
-
-                                    foreach (DataRow row in chara.RelationDataView.ToTable().Rows)
+                                    foreach (DataRow row in renameDataTable.Rows)
                                     {
                                         var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
-                                        var text = $"相性,{row["ID"]},{row["値"]},{commentPart}";
-                                        WriteToSw(sw, text);
+                                        sw.WriteLine($"{row["置き換え値"]},{row["置き換えパターン"]},{commentPart}");
+                                        if (Prefixes.Contains(row["置き換えパターン"].ToString().Split(':')[0]))
+                                        {
+                                            var key = $"{row["置き換えパターン"].ToString().Split(':')[0]}:{row["置き換え値"]}";
+                                            if (!逆引きCSV設定.ContainsKey(key))
+                                                逆引きCSV設定[key] = $"[[{row["置き換えパターン"]}]]";
+                                        }
                                     }
-
                                 }
                             }
-                        }
 
-                        if (UpdateErb)
-                        {
-                            var outputEncoding = new UTF8Encoding(true);
-                            foreach (var item in Directory.GetFiles(ErbExeDir, "*.erb", SearchOption.AllDirectories))
+                            var csvNoDigits = CharacterList.Max(chara => chara.EditNo).ToString().Length;
+                            foreach (var chara in CharacterList)
                             {
-                                var erbContent = File.ReadAllText(item);
-                                erbContent = ReplaceContent(erbContent);
-                                File.WriteAllText(item.Replace(ErbExeDir, OutErbExeDir), erbContent, outputEncoding);
-                            }
-                        }
+                                csvFileName = Path.Combine(CsvDir, $"Chara{chara.EditNo.ToString($"D{csvNoDigits}")}_{/*sWhitespace.Replace(*/chara.EditName/*, "")*/}.csv").Replace(ErbExeDir, OutErbExeDir);
+                                using (var csvFile = File.Open(csvFileName, FileMode.Create))
+                                {
+                                    using (var sw = new StreamWriter(csvFile, new UTF8Encoding(true)))
+                                    {
+                                        WriteToSw(sw, $"番号,{chara.EditNo}");
+                                        WriteToSw(sw, $"名前,{chara.EditName}");
+                                        if (!string.IsNullOrWhiteSpace(chara.EditCallName))
+                                            WriteToSw(sw, $"呼び名,{chara.EditCallName}");
+                                        if (!string.IsNullOrWhiteSpace(chara.EditNickName))
+                                            WriteToSw(sw, $"あだ名,{chara.EditNickName}");
 
+                                        WriteTable(chara.BaseDataView.ToTable(), baseDataTable, "基礎", sw);
+                                        WriteTable(chara.AblDataView.ToTable(), ablDataTable, "能力", sw);
+                                        WriteTable(chara.ExpDataView.ToTable(), expDataTable, "経験", sw);
+                                        WriteTable(chara.TalentDataView.ToTable(), talentDataTable, "素質", sw);
+                                        WriteTable(chara.MarkDataView.ToTable(), markDataTable, "刻印", sw);
+                                        WriteTable(chara.EquipDataView.ToTable(), equipDataTable, "装着物", sw);
+                                        WriteTable(chara.JuelDataView.ToTable(), palamDataTable, "珠", sw);
+                                        WriteTable(chara.CFlagDataView.ToTable(), cflagDataTable, "フラグ", sw);
+                                        WriteTable(chara.CStrDataView.ToTable(), cstrDataTable, "CSTR", sw);
+
+                                        foreach (DataRow row in chara.RelationDataView.ToTable().Rows)
+                                        {
+                                            var commentPart = string.IsNullOrWhiteSpace(row["コメント"].ToString()) ? string.Empty : $";{row["コメント"]}";
+                                            var text = $"相性,{row["ID"]},{row["値"]},{commentPart}";
+                                            WriteToSw(sw, text);
+                                        }
+
+                                    }
+                                }
+                            }
+
+                            if (UpdateErb)
+                            {
+                                var outputEncoding = new UTF8Encoding(true);
+                                foreach (var item in Directory.GetFiles(ErbExeDir, "*.erb", SearchOption.AllDirectories))
+                                {
+                                    var erbContentUtf8 = File.ReadAllText(item, Encoding.UTF8);
+                                    var erbContentShiftJis = string.Empty;
+                                    using (System.IO.StreamReader sr = new System.IO.StreamReader(item, System.Text.Encoding.GetEncoding("shift_jis")))
+                                    {
+                                        erbContentShiftJis = sr.ReadToEnd();
+                                    }
+                                    var erbContent = erbContentUtf8.Length < erbContentShiftJis.Length ? erbContentUtf8 : erbContentShiftJis;
+                                    erbContent = ReplaceContent(erbContent);
+                                    File.WriteAllText(item.Replace(ErbExeDir, OutErbExeDir), erbContent, outputEncoding);
+                                }
+                            }
+
+                        }
+                        finally
+                        {
+                            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                        }
                     });
                 }
                 return generateOutputCommand;

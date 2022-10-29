@@ -328,9 +328,14 @@ namespace EraDataHandler
         {
             Int64 index = -1;
             Int32 paramIndex = -1;
-            string[] tokens = line.Split(';');
-            var comment = tokens.Length > 1 ? tokens[1] : String.Empty;
-            tokens = tokens[0].Split(',');
+            //string[] tokens = line.Split(';');
+            //var comment = tokens.Length > 1 ? tokens[1] : String.Empty;
+            //tokens = tokens[0].Split(',');
+            string[] tokens = line.Split(',');
+            // Return if comment line
+            if (tokens[0].StartsWith(";"))
+                return;
+            var comment = string.Empty;
             if ((tokens[0].Equals("NO", StringComparison.OrdinalIgnoreCase)) || (tokens[0].Equals("番号", StringComparison.OrdinalIgnoreCase)))
             {
 
