@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace EraDataHandler
 {
     public class IdNameValueComment
     {
-        public Int32 Id;
+        public Int64 Id;
         public string Name;
         public string Value;
         public string Comment;
@@ -19,7 +20,7 @@ namespace EraDataHandler
 
     public class IdNameValuePriceComment : IdNameValueComment
     {
-        public Int32 Price;
+        public Int64 Price;
     }
 
     public class GeneralCsvModel
@@ -38,13 +39,13 @@ namespace EraDataHandler
 
         protected List<IdNameValueComment> ToListIdNameComment(DataTable source)
         {
-            var id = 0;
+            Int64 id = 0;
             var result = new List<IdNameValueComment>();
             if (source != null && source.Rows.Count > 0)
             {
                 result.AddRange(source.AsEnumerable().Select(row => new IdNameValueComment()
                 {
-                    Id = Int32.TryParse(row[ColumnNameId].ToString(), out id) ? id : 0,
+                    Id = Int64.TryParse(row[ColumnNameId].ToString(), out id) ? id : 0,
                     Name = row[ColumnNameName].ToString(),
                     Value = row[ColumnNameValue]?.ToString(),
                     Comment = row[ColumnNameComment]?.ToString()
@@ -58,13 +59,17 @@ namespace EraDataHandler
             var result = new List<IdNameValuePriceComment>();
             if (source != null && source.Rows.Count > 0)
             {
-                result.AddRange(source.AsEnumerable().Select(row => new IdNameValuePriceComment()
+                result.AddRange(source.AsEnumerable().Select(row =>
                 {
-                    Id = Int32.Parse(row[ColumnNameId].ToString()),
-                    Name = row[ColumnNameName].ToString(),
-                    Value = row[ColumnNameValue]?.ToString(),
-                    Price = Int32.Parse(row[ColumnNamePrice]?.ToString()),
-                    Comment = row[ColumnNameComment]?.ToString()
+                    Debug.WriteLine($"{row[ColumnNameId].ToString()},{row[ColumnNameName].ToString()}");
+                    return new IdNameValuePriceComment()
+                    {
+                        Id = Int64.Parse(row[ColumnNameId].ToString()),
+                        Name = row[ColumnNameName].ToString(),
+                        Value = row[ColumnNameValue]?.ToString(),
+                        Price = Int64.Parse(row[ColumnNamePrice]?.ToString()),
+                        Comment = row[ColumnNameComment]?.ToString()
+                    };
                 }));
             }
             return result;

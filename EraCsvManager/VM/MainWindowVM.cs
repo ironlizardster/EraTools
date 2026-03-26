@@ -21,6 +21,7 @@ namespace EraCsvManager.VM
     {
         public bool BackupOutput { get; set; }
         public bool UpdateErb { get; set; }
+        public bool Generate逆引きキャラIDWithCallNameInsteadOfName { get; set; }
         public bool ReverseErb { get; set; }
         public bool ReverseWithRename { get; set; }
 
@@ -219,7 +220,13 @@ namespace EraCsvManager.VM
                                 row["置き換えパターン"] = item.Name;
                                 row["置き換え値"] = item.Value;
                                 row["コメント"] = item.Comment;
+                                try
+                                {
                                 renameDataTable.Rows.Add(row);
+                            }
+                                catch (Exception)
+                                {
+                                }
                             }
                             #endregion
 
@@ -227,7 +234,8 @@ namespace EraCsvManager.VM
                             characterList = genCsvModel.Charas;
                             foreach (var chara in characterList.OrderBy(tmpchara => tmpchara.No))
                             {
-                                var pattern = $"キャラ:{/*sWhitespace.Replace(*/chara.Name/*, "")*/}";
+                                var namePattern = Generate逆引きキャラIDWithCallNameInsteadOfName ? chara.Callname : chara.Name;
+                                var pattern = $"キャラ:{/*sWhitespace.Replace(*/namePattern/*, "")*/}";
                                 var value = $"{chara.No}";
                                 逆引きキャラID[value] = pattern;
                                 if (characterList.Count(tmpchara => tmpchara.Name == chara.Name) > 1)
@@ -541,7 +549,7 @@ namespace EraCsvManager.VM
                                 var backupName = Path.Combine(OutErbExeDir, $"..\\{dirName}_Backup{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}");
                                 foreach (string dirPath in Directory.GetDirectories(OutErbExeDir, "*", SearchOption.AllDirectories))
                                 {
-                                    if (dirPath.ToLower().EndsWith(@"\.git")|| dirPath.ToLower().Contains(@"\.git\")
+                                    if (dirPath.ToLower().EndsWith(@"\.git") || dirPath.ToLower().Contains(@"\.git\")
                                     || dirPath.ToLower().EndsWith(@"\.vs") || dirPath.ToLower().Contains(@"\.vs\"))
                                         continue;
                                     Directory.CreateDirectory(dirPath.Replace(OutErbExeDir, backupName));
@@ -699,7 +707,12 @@ namespace EraCsvManager.VM
                                     }
                                     var erbContent = erbContentUtf8.Length < erbContentShiftJis.Length ? erbContentUtf8 : erbContentShiftJis;
                                     erbContent = ReplaceContent(erbContent);
-                                    File.WriteAllText(item.Replace(ErbExeDir, OutErbExeDir), erbContent, outputEncoding);
+                                    var path = item.Replace(ErbExeDir, OutErbExeDir);
+                                    if (!Directory.Exists(Path.GetDirectoryName(path)))
+                                    {
+                                        Directory.CreateDirectory(Path.GetDirectoryName(path));
+                                    }
+                                    File.WriteAllText(path, erbContent, outputEncoding);
                                 }
                             }
 
