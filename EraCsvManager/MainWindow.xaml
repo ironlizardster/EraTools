@@ -89,7 +89,7 @@
             DockPanel.Dock="Top">
             <CheckBox Content="バックアップする？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding BackupOutput}" VerticalContentAlignment="Center"/>
             <CheckBox Content="出力Eraルートフォルダ\ERB\のなかの*.ERBを変換する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding UpdateErb}" VerticalContentAlignment="Center"/>
-            <CheckBox Content="逆引きキャラIDを名前の代わりに呼び名を使って生成する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding Generate逆引きキャラIDWithCallNameInsteadOfName}" VerticalContentAlignment="Center"/>
+            <CheckBox Content="逆引きキャラIDを名前の代わりにNICKNAMEを使って生成する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding Generate逆引きキャラIDWithNICKNAMEInsteadOfName}" VerticalContentAlignment="Center"/>
             <CheckBox Content="ERBを可読化のかわりに難読化する？" IsEnabled="{Binding OutErbExeDir, Converter={StaticResource FolderPathIsPresentConverter}}" IsChecked="{Binding ReverseErb}" VerticalContentAlignment="Center"/>
             <CheckBox Content="_Rename.csvも使って難読化する？" IsEnabled="{Binding ReverseErb}" IsChecked="{Binding ReverseWithRename}" VerticalContentAlignment="Center"/>
         </WrapPanel>

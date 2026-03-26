@@ -21,7 +21,7 @@ namespace EraCsvManager.VM
     {
         public bool BackupOutput { get; set; }
         public bool UpdateErb { get; set; }
-        public bool Generate逆引きキャラIDWithCallNameInsteadOfName { get; set; }
+        public bool Generate逆引きキャラIDWithNICKNAMEInsteadOfName { get; set; }
         public bool ReverseErb { get; set; }
         public bool ReverseWithRename { get; set; }
 
@@ -234,7 +234,7 @@ namespace EraCsvManager.VM
                             characterList = genCsvModel.Charas;
                             foreach (var chara in characterList.OrderBy(tmpchara => tmpchara.No))
                             {
-                                var namePattern = Generate逆引きキャラIDWithCallNameInsteadOfName ? chara.Callname : chara.Name;
+                                var namePattern = Generate逆引きキャラIDWithNICKNAMEInsteadOfName ? chara.Nickname : chara.Name;
                                 var pattern = $"キャラ:{/*sWhitespace.Replace(*/namePattern/*, "")*/}";
                                 var value = $"{chara.No}";
                                 逆引きキャラID[value] = pattern;
