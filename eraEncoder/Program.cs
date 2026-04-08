@@ -17,7 +17,7 @@ namespace eraEncoder
                 Encoding encoding;
                 var outputEncoding = new UTF8Encoding(true);
 
-                var extensions = new string[] { "*.erb", "*.csv" };
+                var extensions = new string[] { "*.erb", "*.erh", "*.csv" };
                 foreach (var ext in extensions)
                 {
                     foreach (var item in System.IO.Directory.GetFiles(folderPath, ext, SearchOption.AllDirectories))
